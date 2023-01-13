@@ -137,6 +137,7 @@ function cadastrarDespesa() {
     document.getElementById('bodyModal').innerHTML = 'Registro salvo com sucesso.';
     document.getElementById('buttonModal').innerHTML = 'Continuar';
     document.getElementById('buttonModal').className = 'btn btn-secondary btn-success';
+    document.getElementById("buttonConfirm").className = 'invisible'
     document.getElementById('titulo_modal_div').className = 'modal-header text-success';
     $(modalRegistraDespesa).modal('show');    
   } else {
@@ -144,6 +145,7 @@ function cadastrarDespesa() {
     document.getElementById('bodyModal').innerHTML = 'Existem campos obrigatórios que não foram preenchidos.'
     document.getElementById('buttonModal').innerHTML = 'Voltar e Corrigir';
     document.getElementById('buttonModal').className = 'btn btn-secondary btn-danger';
+    document.getElementById("buttonConfirm").className = 'invisible'
     document.getElementById('titulo_modal_div').className = 'modal-header text-danger';
     $(modalRegistraDespesa).modal('show');    
   }
@@ -172,11 +174,27 @@ function carregaListaDespesas() {
     btn.className = "btn btn-danger" ;
     btn.innerHTML = "<i class = 'fas fa-times'></i>";    
     btn.onclick = function(){
+
+      let btnConfirm = document.getElementById("buttonConfirm");
+      btnConfirm.className = "btn btn-secondary btn-success visible";            
+      btnConfirm.innerHTML = 'Sim'      
+      btnConfirm.onclick = function(){
+        bd.remover(d.id)
       
-      bd.remover(d.id)
+        carregaListaDespesas();
+        $(modalRegistraDespesa).modal('hide')
+        //window.location.reload();
+      }
       
-      carregaListaDespesas();
-      //window.location.reload();
+      document.getElementById('tituloModalLabel').innerHTML = 'Cancelar Registro';
+      document.getElementById('bodyModal').innerHTML = 'Deseja cancelar registro?';
+      document.getElementById('buttonModal').innerHTML = 'Não';
+      document.getElementById('buttonModal').className = 'btn btn-secondary btn-danger';
+      document.getElementById('titulo_modal_div').className = 'modal-header text-primary';
+
+      
+      $(modalRegistraDespesa).modal('show');
+      
     }
     
     linha.insertCell(4).append(btn);
